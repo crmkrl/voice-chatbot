@@ -46,11 +46,6 @@ def greeting(sentence):
         if word.lower() in responses.GREETING_INPUTS:
             return random.choice(responses.GREETING_RESPONSES)
 
-def ask_robot(sentence): 
-    for word in sentence.split():
-        if word.lower() in responses.ASK_INPUTS:
-            return random.choice(responses.ANSWER_RESPONSES)
-
 def translate(text, from_lang, to_lang):
     translation = GoogleTranslator(source=from_lang, target=to_lang).translate(text)  # output -> Weiter so, du bist großartig
     return translation
@@ -81,7 +76,7 @@ def response(user_response, lang):  #pulling out from dataset
     flat.sort()
     req_tfidf = flat[-2]
     if(req_tfidf==0):
-        robo_response=robo_response+"My apologies, I am only a robot."
+        robo_response=robo_response+"My apologies, I am only a robot and under development."
         if lang!="en":
             robo_response=translate(robo_response, "english", lang)
         gTTS_cmd(robo_response, lang)
