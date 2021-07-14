@@ -20,7 +20,9 @@ pip3 install SpeechRecognition
 ```
 
 # Run
->python3 malji.py
+```
+python3 malji.py
+```
 
 # Reference
 Reference: https://github.com/parulnith/Building-a-Simple-Chatbot-in-Python-using-NLTK
