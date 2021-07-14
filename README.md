@@ -12,6 +12,7 @@ The project uses Python 3.6.9 version.
 
 2. Install the libraries below.
 ```
+sudo apt-get install python-pyaudio python3-pyaudio 
 pip3 install nltk
 pip3 install gTTS
 pip3 install PyAudio
