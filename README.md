@@ -6,8 +6,13 @@ You can find malji.ipynb for step by step explanation and accuracy of the cosine
 Note: The whole project was tested using Linux OS. 
 
 # Dependencies
+The project uses Python 3.6.9 version.
 
-
+pip3 install nltk
+pip3 install gTTS
+pip3 install PyAudio
+pip3 install langdetect
+pip3 install SpeechRecognition
 
 # Run
 python3 malji.py
