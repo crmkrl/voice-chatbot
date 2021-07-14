@@ -3,7 +3,11 @@ This is made for a project in Natural Language Processing. It has speech recogni
 
 You can find malji.ipynb for step by step explanation and accuracy of the cosine similarity.
 
+Note: The whole project was tested using Linux OS. 
+
 # Dependencies
+
+
 
 # Run
 python3 malji.py
