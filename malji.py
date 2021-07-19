@@ -2,6 +2,7 @@ import io
 import random
 import string
 import warnings
+from nltk import text
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -54,6 +55,7 @@ def gTTS_cmd(txt, language):  #text to audio
     myobj = gTTS(text=txt, lang=language, slow=False)
     myobj.save("malji.mp3")
     os.system("mpg321 malji.mp3")
+    # print(txt)
 
 def speech_cmd():  #audio to text
     with speech.Microphone() as source:
@@ -67,10 +69,12 @@ def speech_cmd():  #audio to text
 
 def response(user_response, lang):  #pulling out from dataset
     robo_response=''
-    sent_tokens.append(user_response)
+    sent_tokens.append(user_response)       #per sentences stoping words
+    # print(sent_tokens)
     TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words='english')
     tfidf = TfidfVec.fit_transform(sent_tokens)
     vals = cosine_similarity(tfidf[-1], tfidf)
+    print(vals)
     idx=vals.argsort()[0][-2]
     flat = vals.flatten()
     flat.sort()
@@ -95,33 +99,30 @@ with open('txt/initial.txt','r', encoding='utf8', errors ='ignore') as fin:
 
 flag=True   
 recog = speech.Recognizer()
-while(flag==True):
-    user_response = input()         #for readline  
-    # user_response = speech_cmd()  #for voice command
+# while(flag==True):
+#     user_response = input()         #for readline  
+#     # user_response = speech_cmd()  #for voice command
 
-    #idle...waiting for input
-    if user_response is None:
-        gTTS_cmd(random.choice(responses.QUIET_ERROR), "en")
-        time.sleep(3)
-    else:
-        lang = detect(user_response)    
-        if lang != "en":
-            user_response = translate(user_response, lang, "en")
-        user_response=user_response.lower()
-        if(user_response!='bye'):
-            if(user_response=='thanks' or user_response=='thank you' ):
-                flag=False
-                gTTS_cmd("You are welcome.", lang)
-            else:
-                if(greeting(user_response)!=None):
-                    gTTS_cmd(greeting(user_response), "en")
-                else:
-                    response(user_response, lang)
-                    sent_tokens.remove(user_response)
-        else:
-            flag=False  
-            gTTS_cmd("Good bye!", lang)
-
-        
-        
+#     #idle...waiting for input
+#     if user_response is None:
+#         gTTS_cmd(random.choice(responses.QUIET_ERROR), "en")
+#         time.sleep(3)
+#     else:
+#         lang = detect(user_response)    
+#         if lang != "en":
+#             user_response = translate(user_response, lang, "en")
+#         user_response=user_response.lower()
+#         if(user_response!='bye'):
+#             if(user_response=='thanks' or user_response=='thank you' ):
+#                 flag=False
+#                 gTTS_cmd("You are welcome.", lang)
+#             else:
+#                 if(greeting(user_response)!=None):
+#                     gTTS_cmd(greeting(user_response), "en")
+#                 else:
+#                     response(user_response, lang)
+#                     sent_tokens.remove(user_response)
+#         else:
+#             flag=False  
+#             gTTS_cmd("Good bye!", lang)
 
