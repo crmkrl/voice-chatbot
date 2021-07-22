@@ -52,10 +52,10 @@ def translate(text, from_lang, to_lang):
     return translation
 
 def gTTS_cmd(txt, language):  #text to audio
-    myobj = gTTS(text=txt, lang=language, slow=False)
-    myobj.save("malji.mp3")
-    os.system("mpg321 malji.mp3")
-    # print(txt)
+    # myobj = gTTS(text=txt, lang=language, slow=False)
+    # myobj.save("malji.mp3")
+    # os.system("mpg321 malji.mp3")
+    print(txt)
 
 def speech_cmd():  #audio to text
     with speech.Microphone() as source:
@@ -67,14 +67,36 @@ def speech_cmd():  #audio to text
         gTTS_cmd(random.choice(responses.AUDIO_ERROR))
         pass
 
+import string
+import pprint
+from collections import Counter
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+
+def count_vec(sent_tokens):
+    preprocessed_data = []
+    for i in sent_tokens:
+        preprocessed_data.append(i.split(' '))
+    # frequency_list = []
+    # for i in preprocessed_data:
+    #     frequency_list.append(Counter(i))
+
+    #bag of words
+    count_vector = CountVectorizer(sent_tokens)
+    count_vector.fit(sent_tokens)
+    doc_array = count_vector.transform(sent_tokens).toarray()    
+
+    col_names=count_vector.get_feature_names()
+    frequency_matrix = pd.DataFrame(doc_array,index=sent_tokens,columns=col_names)
+    print(frequency_matrix[preprocessed_data[-1]])
+
 def response(user_response, lang):  #pulling out from dataset
     robo_response=''
-    sent_tokens.append(user_response)       #per sentences stoping words
-    # print(sent_tokens)
+    sent_tokens.append(user_response)       #per sentences stopping words
+    count_vec(sent_tokens)
     TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words='english')
     tfidf = TfidfVec.fit_transform(sent_tokens)
     vals = cosine_similarity(tfidf[-1], tfidf)
-    print(vals)
     idx=vals.argsort()[0][-2]
     flat = vals.flatten()
     flat.sort()
@@ -99,30 +121,30 @@ with open('txt/initial.txt','r', encoding='utf8', errors ='ignore') as fin:
 
 flag=True   
 recog = speech.Recognizer()
-# while(flag==True):
-#     user_response = input()         #for readline  
-#     # user_response = speech_cmd()  #for voice command
+while(flag==True):
+    user_response = input()         #for readline  
+    # user_response = speech_cmd()  #for voice command
 
-#     #idle...waiting for input
-#     if user_response is None:
-#         gTTS_cmd(random.choice(responses.QUIET_ERROR), "en")
-#         time.sleep(3)
-#     else:
-#         lang = detect(user_response)    
-#         if lang != "en":
-#             user_response = translate(user_response, lang, "en")
-#         user_response=user_response.lower()
-#         if(user_response!='bye'):
-#             if(user_response=='thanks' or user_response=='thank you' ):
-#                 flag=False
-#                 gTTS_cmd("You are welcome.", lang)
-#             else:
-#                 if(greeting(user_response)!=None):
-#                     gTTS_cmd(greeting(user_response), "en")
-#                 else:
-#                     response(user_response, lang)
-#                     sent_tokens.remove(user_response)
-#         else:
-#             flag=False  
-#             gTTS_cmd("Good bye!", lang)
+    #idle...waiting for input
+    if user_response is None:
+        gTTS_cmd(random.choice(responses.QUIET_ERROR), "en")
+        time.sleep(3)
+    else:
+        lang = detect(user_response)    
+        if lang != "en":
+            user_response = translate(user_response, lang, "en")
+        user_response=user_response.lower()
+        if(user_response!='bye'):
+            if(user_response=='thanks' or user_response=='thank you' ):
+                flag=False
+                gTTS_cmd("You are welcome.", lang)
+            else:
+                if(greeting(user_response)!=None):
+                    gTTS_cmd(greeting(user_response), "en")
+                else:
+                    response(user_response, lang)
+                    sent_tokens.remove(user_response)
+        else:
+            flag=False  
+            gTTS_cmd("Good bye!", lang)
 
