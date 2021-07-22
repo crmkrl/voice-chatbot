@@ -52,9 +52,9 @@ def translate(text, from_lang, to_lang):
     return translation
 
 def gTTS_cmd(txt, language):  #text to audio
-    # myobj = gTTS(text=txt, lang=language, slow=False)
-    # myobj.save("malji.mp3")
-    # os.system("mpg321 malji.mp3")
+    myobj = gTTS(text=txt, lang=language, slow=False)
+    myobj.save("malji.mp3")
+    os.system("mpg321 malji.mp3")
     print(txt)
 
 def speech_cmd():  #audio to text
@@ -122,8 +122,8 @@ with open('txt/initial.txt','r', encoding='utf8', errors ='ignore') as fin:
 flag=True   
 recog = speech.Recognizer()
 while(flag==True):
-    user_response = input()         #for readline  
-    # user_response = speech_cmd()  #for voice command
+    # user_response = input()         #for readline  
+    user_response = speech_cmd()  #for voice command
 
     #idle...waiting for input
     if user_response is None:
