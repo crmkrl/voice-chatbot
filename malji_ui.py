@@ -59,7 +59,6 @@ def ask_from_bot(query, answer_from_bot):
     textF.delete(0, END)
     msgs.yview(END)
 
-
 frame = Frame(main)
 sc = Scrollbar(frame)
 msgs = Listbox(frame, width=80, height=20, yscrollcommand=sc.set)
