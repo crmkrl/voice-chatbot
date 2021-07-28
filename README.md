@@ -2,6 +2,7 @@
 This is made for a project in Natural Language Processing. It has speech recognition as input and can handle different languages. 
 
 >Note: The whole project was tested using Linux OS. 
+> (IN PROGRESS)
 
 # Dependencies
 The project uses Python 3.6.9 version.
