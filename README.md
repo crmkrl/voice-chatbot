@@ -13,16 +13,16 @@ The project uses Python 3.6.9 version.
 2. Install the libraries below.
 ```
 sudo apt-get install python-pyaudio python3-pyaudio 
-pip3 install nltk
-pip3 install gTTS
-pip3 install PyAudio
-pip3 install langdetect
-pip3 install SpeechRecognition
+pip install nltk
+pip install gTTS
+pip install PyAudio
+pip install langdetect
+pip install SpeechRecognition
 ```
 
 # Run
 ```
-python3 malji.py
+python maljibot.py
 ```
 
 # Reference
