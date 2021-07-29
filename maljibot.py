@@ -41,6 +41,7 @@ def takeQuery():
             else:
                 flag=False  
                 robo_respose="Robot: "+gTTS_cmd("Good bye!", lang)
+                thread_exit()
         except:
             gTTS_cmd("Language not detected.", "en")
             robo_respose="Robot: Are you an alien? The language is not supported."

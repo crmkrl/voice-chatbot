@@ -68,7 +68,6 @@ def list_mic():
     else:
         print("No working microphones found!")
 
-
 def speech_cmd():  #audio to text
     with speech.Microphone(device_index=14) as source:
         audio= recog.listen(source)
@@ -129,36 +128,6 @@ def response(user_response, lang):  #pulling out from dataset
 
 flag=True   
 recog = speech.Recognizer()
-
-def chat(user_response):
-    robot_response=""
-    if user_response is None:
-        robot_response=random.choice(responses.QUIET_ERROR)
-        gTTS_cmd(random.choice(responses.QUIET_ERROR), "en")
-        time.sleep(3)
-    else:
-        lang = detect(user_response) 
-        if lang != "en":
-            user_response = translate(user_response, lang, "en")
-        user_response=user_response.lower()
-        if(user_response!='bye'):
-            if(user_response=='thanks' or user_response=='thank you' ):
-                flag=False
-                robot_response="You are welcome."
-                gTTS_cmd("You are welcome.", lang)
-            else:
-                if(greeting(user_response)!=None):
-                    robot_response=greeting(user_response)
-                    gTTS_cmd(greeting(user_response), "en")
-                else:
-                    robot_response = response(user_response, lang)
-                    sent_tokens.remove(user_response)
-        else:
-            flag=False  
-            robot_response="Good bye!"
-            gTTS_cmd("Good bye!", lang)
-    
-    return robot_response
 
 # while(flag==True):
 #     # user_response = input()         #for readline  
