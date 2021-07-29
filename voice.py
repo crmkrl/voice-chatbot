@@ -55,7 +55,7 @@ def gTTS_cmd(txt, language):  #text to audio
     myobj = gTTS(text=txt, lang=language, slow=False)
     myobj.save("malji.mp3")
     os.system("mpg321 malji.mp3")
-    print(txt)
+    return txt
 
 def list_mic():
     for device_index in speech.Microphone.list_microphone_names():
@@ -101,7 +101,7 @@ def count_vec(sent_tokens):
 
     col_names=count_vector.get_feature_names()
     frequency_matrix = pd.DataFrame(doc_array,index=sent_tokens,columns=col_names)
-    print(frequency_matrix[preprocessed_data[-1]])
+    # print(frequency_matrix[preprocessed_data[-1]])
 
 def response(user_response, lang):  #pulling out from dataset
     robo_response=''
@@ -126,11 +126,6 @@ def response(user_response, lang):  #pulling out from dataset
             robo_response=translate(robo_response, "english", lang)
         gTTS_cmd(robo_response, lang)
         return robo_response
-
-#initial greetings
-with open('txt/initial.txt','r', encoding='utf8', errors ='ignore') as fin:
-    malji_greetings = fin.read().lower()
-    gTTS_cmd(malji_greetings, "en")
 
 flag=True   
 recog = speech.Recognizer()
