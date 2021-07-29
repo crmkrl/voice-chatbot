@@ -4,7 +4,6 @@ import threading
 from voice import *
 
 main= Tk()
-main.geometry("450x500")    #wxh
 
 def greet():
     label.config(text= "Greetings!")
@@ -16,7 +15,8 @@ def greet():
 
 def takeQuery():
     user_response = input()     #for readline
-    # user_response = speech_cmd()  #for voice command         
+    # user_response = speech_cmd()  #for voice command
+             
     robo_respose=""
     label.config(text= "Processing...")
     if user_response is None:
@@ -41,6 +41,7 @@ def takeQuery():
             else:
                 flag=False  
                 robo_respose="Robot: "+gTTS_cmd("Good bye!", lang)
+                time.sleep(2)
                 thread_exit()
         except:
             gTTS_cmd("Language not detected.", "en")
@@ -51,7 +52,7 @@ def takeQuery():
 def thread_exit():
     main.destroy()
 
-def thread_fun():
+def thread_run():
     greet()
     while(flag==True):
         textbox.delete(1.0, END)
@@ -61,19 +62,46 @@ def thread_fun():
         label.config(text= "Wait for the robot...")
         time.sleep(7)
 
+def donothing():
+    print("")
+
+#GUI
+main.geometry("450x500")    #wxh
 label= Label(main)
 label.pack(pady=20)
 
+#Menu
+menubar = Menu(main)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=donothing)
+filemenu.add_command(label="Open", command=donothing)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_command(label="Save as...", command=donothing)
+filemenu.add_command(label="Close", command=donothing)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=thread_exit)
+menubar.add_cascade(label="File", menu=filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_command(label="Undo", command=donothing)
+
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="Robot Config", command=donothing)
+helpmenu.add_command(label="About...", command=donothing)
+menubar.add_cascade(label="Help", menu=helpmenu)
+
+#Textbox
 textbox = Text(main, height = 20, width = 50)
 textbox.pack()
-threading.Thread(target=thread_fun).start()
+threading.Thread(target=thread_run).start()
 
-main.title("nlp-maljibot")
-
-exit_button = Button(main, text="Exit", command=thread_exit)
+#Exit
+exit_button = Button(main, relief=GROOVE, text="Exit", command=thread_exit)
 exit_button.pack(pady=20)
 
+#Image
 img = PhotoImage(file = 'malji.png') 
 main.iconphoto(False, img)
 
+main.title("nlp-maljibot")
+main.config(menu=menubar)
 main.mainloop()
