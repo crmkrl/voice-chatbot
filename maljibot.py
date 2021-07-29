@@ -15,30 +15,36 @@ def greet():
         time.sleep(3)
 
 def takeQuery():
-    user_response = input()         
+    user_response = input()     #for readline
+    # user_response = speech_cmd()  #for voice command         
     robo_respose=""
     label.config(text= "Processing...")
     if user_response is None:
         robo_respose="Robot: "+gTTS_cmd(random.choice(responses.QUIET_ERROR), "en")
         time.sleep(3)
     else:
-        lang = detect(user_response) 
-        if lang != "en":
-            user_response = translate(user_response, lang, "en")
-        user_response=user_response.lower()
-        if(user_response!='bye'):
-            if(user_response=='thanks' or user_response=='thank you' ):
-                flag=False
-                robo_respose="Robot: "+gTTS_cmd("You are welcome.", lang)
-            else:
-                if(greeting(user_response)!=None):
-                    robo_respose="Robot: "+gTTS_cmd(greeting(user_response), "en")
+        try:
+            lang = detect(user_response) 
+            if lang != "en":
+                user_response = translate(user_response, lang, "en")
+            user_response=user_response.lower()
+            if(user_response!='bye'):
+                if(user_response=='thanks' or user_response=='thank you' ):
+                    flag=False
+                    robo_respose="Robot: "+gTTS_cmd("You are welcome.", lang)
                 else:
-                    robo_respose="Robot: "+response(user_response, lang)
-                    sent_tokens.remove(user_response)
-        else:
-            flag=False  
-            robo_respose="Robot: "+gTTS_cmd("Good bye!", lang)
+                    if(greeting(user_response)!=None):
+                        robo_respose="Robot: "+gTTS_cmd(greeting(user_response), "en")
+                    else:
+                        robo_respose="Robot: "+response(user_response, lang)
+                        sent_tokens.remove(user_response)
+            else:
+                flag=False  
+                robo_respose="Robot: "+gTTS_cmd("Good bye!", lang)
+        except:
+            gTTS_cmd("Language not detected.", "en")
+            robo_respose="Robot: Are you an alien? The language is not supported."
+            pass
         return robo_respose
 
 def thread_exit():
